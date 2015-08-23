@@ -5,17 +5,7 @@ atom_style      atomic                # Pair potentials.
 #------------------------------------------------------------------
 #  Define simulation box.
 #------------------------------------------------------------------
-read_data     traj 
-
-#lattice custom  4.0495 a1 0 0.5 0.5 a2 0.5 0 0.5 a3 0.5 0.5 0
-#lattice fcc 4.0495
-#region my_box block 0 20 0 20 0 20
-#lattice custom  3.2368 a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 &
-#		basis 0 0 0 basis 0.5 0.5 0.5
-#region          my_box block 0 4 0 5 0 5 
-#create_box      2 my_box
-#create_atoms    2 region my_box 
-
+read_data     models/Zr50Cu35Al15_8x8x8.dat
 
 
 
@@ -23,15 +13,7 @@ read_data     traj
 #  Define interatomic potential.
 #------------------------------------------------------------------
 pair_style     eam/alloy
-#pair_style      hybrid eam/alloy lj/cut 4.5
-pair_coeff      * * eam/alloy ZrCuAl.lammps.eam Zr Cu Al
-#pair_coeff      *3 4 lj/cut 1 2.25
-#pair_coeff      4 4 lj/cut 2 2.5
-#mass 4 47
-thermo 1000
-thermo_style    custom step temp press etotal pe enthalpy
-thermo_modify   flush yes
-#pair_coeff      *3 4 lj/cut 1 0.5 1.2
+pair_coeff      * * eam/alloy potentials/ZrCuAl2011.eam.alloy Zr Cu Al
 
 neigh_modify    every 1 delay 0 check no
 
@@ -41,7 +23,8 @@ neigh_modify    every 1 delay 0 check no
 #------------------------------------------------------------------
 #  How to write the trajectory.
 #------------------------------------------------------------------
-dump            dump_name all custom 10000 traj.lammpstrj id type x y z 
+#dump            dump_name all custom 10000 traj.lammpstrj id type x y z 
+dump            dump_name all atom 10000 Al92Sm8_sm_tot.dump
 dump_modify     dump_name sort id 
 
 #------------------------------------------------------------------
@@ -50,26 +33,11 @@ dump_modify     dump_name sort id
 thermo 1000
 thermo_style    custom step temp press etotal pe enthalpy
 thermo_modify   flush yes 
-#run 		500
-
-#------------------------------------------------------------------
-#  Define statistical ensemble.
-#------------------------------------------------------------------
-fix	1 all nve 
-#fix		fix_name all  flow temp/rescale 1 0 300 0.02 10
-#fix   1 all nve temp/rescale 100 1.0 1.1 0.02 0.5
-
-#fix_modify  all  temp mytemp
-#fix             fix_name all npt  300.0 400.0 1.0 
-#fix             fix_name all box/relax  iso 0.0
-#fix             fix_name all nvt temp 300 300 0.1
-#fix             fix_name all npt temp 300 300 0.1 aniso 0 0 1 couple xy
-#fix	     1 all nvt 200.0 300.0 1.0
-#run	     1000 start 0 stop 10000
 
 #------------------------------------------------------------------
 #  Initial velocities and timestep (ps).
 #------------------------------------------------------------------
+fix	1 all nve 
 timestep 0.001
 velocity        all create 600 4928459 mom yes rot yes dist gaussian
 run 40000
@@ -80,7 +48,8 @@ run 50000
 unfix md
 
 fix             md all npt temp 300 2000 0.1 iso 0 0 1
-run 50000
+#run 50000
+run 1700000
 unfix md
 
 
@@ -96,7 +65,12 @@ fix             md all npt temp 300 300 0.1 iso 0 0 1
 run 100000
 unfix md
 
+write_restart    model_300K_quenched.restart
+write_data       model_300k_quenched.dat
 
 min_style cg
 minimize 0 1.0e-8 1000 100000
+
+write_restart    model_0k.restart
+write_data       model_0k.dat
 
