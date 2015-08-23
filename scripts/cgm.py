@@ -19,7 +19,7 @@ atom_style	atomic
 read_data {0}
 
 pair_style	eam/alloy
-pair_coeff	* * /home/jjmaldonis/bin/ZrCuAl2011.eam.alloy Zr Cu Al
+pair_coeff	* * potentials/ZrCuAl2011.eam.alloy Zr Cu Al
 
 thermo_style	custom step etotal fmax fnorm
 thermo		1
