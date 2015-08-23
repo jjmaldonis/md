@@ -13,7 +13,7 @@ read_data     models/Zr50Cu35Al15_8x8x8.dat
 #  Define interatomic potential.
 #------------------------------------------------------------------
 pair_style     eam/alloy
-pair_coeff      * * eam/alloy potentials/ZrCuAl2011.eam.alloy Zr Cu Al
+pair_coeff	   * * potentials/ZrCuAl2011.eam.alloy Zr Cu Al
 
 neigh_modify    every 1 delay 0 check no
 
@@ -24,7 +24,7 @@ neigh_modify    every 1 delay 0 check no
 #  How to write the trajectory.
 #------------------------------------------------------------------
 #dump            dump_name all custom 10000 traj.lammpstrj id type x y z 
-dump            dump_name all atom 10000 Al92Sm8_sm_tot.dump
+dump            dump_name all atom 10000 lammps.dump
 dump_modify     dump_name sort id 
 
 #------------------------------------------------------------------
