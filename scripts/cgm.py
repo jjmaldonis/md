@@ -25,7 +25,7 @@ thermo_style	custom step etotal fmax fnorm
 thermo		1
 
 minimize	1.0e-6 0 1000 10000
-write_restart	lmp_emin_exp.restart """.format(modelfile))
+write_data  lmp_emin_exp.dat""".format(modelfile))
     of.close()
 
 if __name__== '__main__':
