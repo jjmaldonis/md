@@ -5,7 +5,7 @@ atom_style      atomic                # Pair potentials.
 #------------------------------------------------------------------
 #  Define simulation box.
 #------------------------------------------------------------------
-read_data     models/Zr50Cu35Al15_8x8x8.dat
+read_data     models/NiP_1400atoms_for_md.dat
 
 
 
@@ -13,11 +13,15 @@ read_data     models/Zr50Cu35Al15_8x8x8.dat
 #  Define interatomic potential.
 #------------------------------------------------------------------
 pair_style     eam/alloy
-pair_coeff	   * * potentials/ZrCuAl2011.eam.alloy Zr Cu Al
+pair_coeff	   * * potentials/NiP.lammps.eam Ni P
 
 neigh_modify    every 1 delay 0 check no
 
 
+#------------------------------------------------------------------
+#  Run a CGM on the starting model.
+#------------------------------------------------------------------
+minimize	1.0e-6 0 1000 10000
 
 
 #------------------------------------------------------------------
